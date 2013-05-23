@@ -52,6 +52,11 @@ var Selectable = function (createDeleteButton, editCancelButton, checkboxes, for
 			this.items = [];
 			this.createDeleteButton.addClass('off').attr('disabled', true);
 			//this.createDeleteButton.attr('disabled', true);
+
+			// Reset checkboxes
+			this.checkbox.attr('checked', false);
+			// Clear this.items
+			this.items = [];
 		}
     };
 
