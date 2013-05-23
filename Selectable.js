@@ -5,7 +5,7 @@
 */
 
 // All params should be element ID's (#) except 'checkboxes' (.) - this will be your checkboxes class
-var Selectable = function (createDeleteButton, editCancelButton, checkboxes, form, textbox, charCounter, confirmButton, checkmark, list) {
+var Selectable = function (createDeleteButton, editCancelButton, confirmButton, checkboxes, form, textbox, charCounter,  checkmark, list, charLimit) {
 
 	 // Fields
 	this.createDeleteButton = $(createDeleteButton); // Create or Delete button
@@ -18,8 +18,11 @@ var Selectable = function (createDeleteButton, editCancelButton, checkboxes, for
 	this.checkboxes = $(checkboxes); // Checkbox containers
 	this.checkbox = $(checkboxes + " :checkbox"); // Actual checkboxes
 	this.list = $(list); // List of elements 
+	this.charLimit = charLimit; // Limit of characters allowed for input (for Countable.js)
 	this.startingListSize = $(list + ' li').size(); // Starting list size 
 	this.items = []; // [Important - this is what you use to implement something server side] Array of selected elements 
+
+	var THIS_INSTANCE = this; // Save correct context of "this" (JavaScript OOP)
 
     // Methods
     this.countSelected = function() {
@@ -144,7 +147,7 @@ var Selectable = function (createDeleteButton, editCancelButton, checkboxes, for
 		//Setup Char Counter object
 		new Countable(this.textbox.get(0), function (counter) {
 			// Setup live character counter with Countable.js
-			var charsLeft = 26 - counter.all;
+			var charsLeft = THIS_INSTANCE.charLimit - counter.all;
 			THIS_INSTANCE.charCounter.text(charsLeft);   
 		});
     };
@@ -194,8 +197,6 @@ var Selectable = function (createDeleteButton, editCancelButton, checkboxes, for
 			}
 		}
     };
-    
-    var THIS_INSTANCE = this; // Save correct context of "this" (JavaScript OOP)
 
     // Events
     this.createDeleteButton.click(function() {
